@@ -5,8 +5,6 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol"; //comes with various p
 import "@openzeppelin/contracts/access/Ownable.sol"; //Module to Transfer Ownership
 import "base64-sol/base64.sol"; // Module to convert SVG file to Base64 encoded
 
-// error ERC721Metadata__URI_QueryFor_NonExistentToken();
-
 contract PluggNFT is ERC721, Ownable {
     uint256 s_tokenCounter;
     string private s_goldImageURI;
@@ -28,6 +26,7 @@ contract PluggNFT is ERC721, Ownable {
     }
 
     function mintNFT(uint256 inputNFT_num) public {
+        NFT_num = inputNFT_num;
         s_tokenCounter = s_tokenCounter + 1;
         _safeMint(msg.sender, s_tokenCounter);
         nftMinters[s_tokenCounter] = msg.sender; //Storing the addresses of NFT Minters in a map
@@ -41,14 +40,10 @@ contract PluggNFT is ERC721, Ownable {
     }
 
     function _baseURI() internal pure override returns (string memory) {
-        return "data:application/json;base64;";
+        return "data:application/json,base64;";
     }
 
     function tokenURI(uint256) public view virtual override returns (string memory) {
-        // if (!_exists(tokenId)) {
-        //     revert ERC721Metadata__URI_QueryFor_NonExistentToken();
-        // }
-
         string memory imageURI = s_goldImageURI;
         if (NFT_num == 2) {
             imageURI = s_silverImageURI;
