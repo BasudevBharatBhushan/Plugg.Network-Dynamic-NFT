@@ -40,7 +40,7 @@ contract PluggNFT is ERC721, Ownable {
     }
 
     function _baseURI() internal pure override returns (string memory) {
-        return "data:application/json,base64;";
+        return "data:application/json;base64,";
     }
 
     function tokenURI(uint256) public view virtual override returns (string memory) {
