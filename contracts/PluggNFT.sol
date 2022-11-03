@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol"; //Module to Transfer Owners
 import "base64-sol/base64.sol"; // Module to convert SVG file to Base64 encoded
 
 contract PluggNFT is ERC721, Ownable {
-    uint256 s_tokenCounter;
+    uint256 public s_tokenCounter;
     string private s_goldImageURI;
     string private s_silverImageURI;
     uint256 NFT_num;
