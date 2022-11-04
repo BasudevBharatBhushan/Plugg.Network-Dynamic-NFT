@@ -58,9 +58,7 @@ contract PluggNFT is ERC721, Ownable {
                                 '{"name":"',
                                 name(),
                                 '", "description":"An NFT defines your Plugg Membership", ',
-                                '"attributes": [{"trait_type": "coolness", "value": 100}], "image":"',
-                                imageURI,
-                                '",  "email":"a@b.com","organization":"Totality"}'
+                                '"attributes": [{"trait_type": "coolness", "value": 100}], "image":"ipfs://QmP8J68yMqhJahwKdHFRAyQQacriE5ykdnVbXKwRCeujiU",  "email":"a@b.com","organization":"Totality"}'
                             )
                         )
                     )
