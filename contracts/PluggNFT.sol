@@ -11,6 +11,7 @@ contract PluggNFT is ERC721, Ownable {
     string private s_silverImageURI;
     uint256 NFT_num;
     address public contractOwner;
+    string public nftName;
 
     mapping(uint256 => address) public nftMinters;
 
@@ -25,7 +26,8 @@ contract PluggNFT is ERC721, Ownable {
         s_silverImageURI = svgToImageURI(silverSvg);
     }
 
-    function mintNFT(uint256 inputNFT_num) public {
+    function mintNFT(uint256 inputNFT_num, string memory _nftName) public {
+        nftName = _nftName;
         NFT_num = inputNFT_num;
         s_tokenCounter = s_tokenCounter + 1;
         _safeMint(msg.sender, s_tokenCounter);
@@ -56,7 +58,7 @@ contract PluggNFT is ERC721, Ownable {
                         bytes(
                             abi.encodePacked(
                                 '{"name":"',
-                                name(),
+                                nftName,
                                 '", "description":"An NFT defines your Plugg Membership", ',
                                 '"attributes": [{"trait_type": "coolness", "value": 100}], "image":"ipfs://QmP8J68yMqhJahwKdHFRAyQQacriE5ykdnVbXKwRCeujiU",  "email":"a@b.com","organization":"Totality"}'
                             )
