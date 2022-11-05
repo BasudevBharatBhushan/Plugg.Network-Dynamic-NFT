@@ -42,7 +42,7 @@ const MainMint = ({ accounts, setAccounts, provider, contract, isConnected, sign
         window.location.href = "https://testnets.opensea.io/" + signerAddress
     }
     const func2 = async () => {
-        window.location.href = "https://testnets.opensea.io/collection/plugg-network-nft-cwyuwnyybf"
+        window.location.href = "https://testnets.opensea.io/collection/plugg-network"
     }
 
     return (
