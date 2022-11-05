@@ -1,10 +1,11 @@
 import { useState } from "react"
 import { BigNumber } from "ethers"
 
-const MainMint = ({ accounts, setAccounts, provider, contract, isConnected, signer }) => {
+const BatchMint = ({ accounts, setAccounts, provider, contract, isConnected, signer }) => {
     const [NFTType, setNFTType] = useState(1)
     const [NFTString, setNFTString] = useState("")
     const [MintMessgae, setMintMessage] = useState("")
+    const [MintQuantity, setMintQuantity] = useState(1)
     const [MintEmail, SetMintEmail] = useState("hello@plugg.network")
 
     async function handleMint() {
@@ -16,10 +17,15 @@ const MainMint = ({ accounts, setAccounts, provider, contract, isConnected, sign
             console.log(provider)
             try {
                 console.log("Minting......")
-                const response = await contract.mintNFT(BigNumber.from(NFTType), MintEmail)
+                const response = await contract.batchMint(
+                    BigNumber.from(NFTType),
+                    BigNumber.from(MintQuantity),
+                    MintEmail
+                )
                 await response.wait(1)
                 console.log(response)
-                setMintMessage("You NFT has been successfully Minted")
+                setMintMessage(`${MintQuantity} NFT has been successfully Minted`)
+                setMintQuantity(0)
             } catch (err) {
                 setMintMessage("Minting Failed")
                 console.log("ERROR:", err)
@@ -47,12 +53,19 @@ const MainMint = ({ accounts, setAccounts, provider, contract, isConnected, sign
 
     return (
         <div>
-            <h1>Write Contract Functions (Cost Gas)</h1>
+            <h1>BATCH MINTING</h1>
             {isConnected && (
                 <div>
                     <h3>Mint Your NFT</h3>
                     <button onClick={goldClick}>Gold</button>
                     <button onClick={silverClick}>Silver</button>
+                    <input
+                        onChange={(e) => {
+                            setMintQuantity(e.target.value)
+                        }}
+                        type="number"
+                        placeholder="Enter no. of NFT you want to mint"
+                    />
                     <input
                         onChange={(e) => {
                             SetMintEmail(e.target.value)
@@ -78,4 +91,4 @@ const MainMint = ({ accounts, setAccounts, provider, contract, isConnected, sign
     )
 }
 
-export default MainMint
+export default BatchMint

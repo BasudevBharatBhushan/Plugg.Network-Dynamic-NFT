@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { ethers, BigNumber } from "ethers"
 
 const ReadContract = ({ accounts, setAccounts, provider, contract, isConnected }) => {
     const [ContractOwner, SetContractOwner] = useState("")

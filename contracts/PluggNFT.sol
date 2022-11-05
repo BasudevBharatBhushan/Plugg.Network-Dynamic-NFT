@@ -17,7 +17,7 @@ contract PluggNFT is ERC721, Ownable {
 
     event CreatedNFT(uint256 indexed tokenId, uint256 inputNFT_num);
 
-    constructor() ERC721("Plugg.Network NFT", "PLUGG") {
+    constructor() ERC721("Plugg.Network", "PLUGG") {
         contractOwner = msg.sender;
         s_tokenCounter = 0;
     }
@@ -56,8 +56,10 @@ contract PluggNFT is ERC721, Ownable {
 
     function tokenURI(uint256) public view virtual override returns (string memory) {
         string memory imageURI = gold_uri;
+        string memory NFT_suffix = " GOLD NFT";
         if (NFT_num == 2) {
             imageURI = silver_uri;
+            NFT_suffix = " SILVER NFT";
         }
         return
             string(
@@ -68,6 +70,7 @@ contract PluggNFT is ERC721, Ownable {
                             abi.encodePacked(
                                 '{"name":"',
                                 name(),
+                                NFT_suffix,
                                 '","description":"NFT Defines your Plugg Membership","image":"',
                                 imageURI,
                                 '", "attributes":[{"trait_type":"Email","value": "',
