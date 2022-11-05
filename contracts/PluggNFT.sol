@@ -32,6 +32,7 @@ contract PluggNFT is ERC721, Ownable {
         for (uint256 i = 0; i < mint_quantity; i++) {
             s_tokenCounter = s_tokenCounter + 1;
             _safeMint(msg.sender, s_tokenCounter);
+            nftMinters[s_tokenCounter] = msg.sender;
         }
     }
 
