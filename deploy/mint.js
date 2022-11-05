@@ -7,7 +7,7 @@ module.exports = async ({ getNamedAccounts }) => {
     // Dynamic Plugg  NFT
     const inputNFT_num = 2
     const PluggNFT = await ethers.getContract("PluggNFT", deployer)
-    const PluggNFTMintTx = await PluggNFT.mintNFT(inputNFT_num, "Basudev")
+    const PluggNFTMintTx = await PluggNFT.mintNFT(inputNFT_num, "dev.bharat173@gmail.com")
     await PluggNFTMintTx.wait(1)
     console.log(`Dynamic SVG NFT index 0 tokenURI: ${await PluggNFT.tokenURI(0)}`)
 }

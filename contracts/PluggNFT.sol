@@ -7,27 +7,36 @@ import "base64-sol/base64.sol"; // Module to convert SVG file to Base64 encoded
 
 contract PluggNFT is ERC721, Ownable {
     uint256 public s_tokenCounter;
-    string private s_goldImageURI;
-    string private s_silverImageURI;
     uint256 NFT_num;
     address public contractOwner;
-    string public nftName;
+    string public nftEmail;
+    string private gold_uri = "ipfs://Qmc8EeCzJpUvpVCeeeqjiEFuXhjEion5dmN3QZUKmouyc4";
+    string private silver_uri = "ipfs://QmRfWPmF6iNrLTuhxHg3ppcrRY125BZoPfFtqMMVCoRSf9";
 
     mapping(uint256 => address) public nftMinters;
 
     event CreatedNFT(uint256 indexed tokenId, uint256 inputNFT_num);
 
-    constructor(string memory goldSvg, string memory silverSvg)
-        ERC721("Plugg.Network NFT", "PLUGG")
-    {
+    constructor() ERC721("Plugg.Network NFT", "PLUGG") {
         contractOwner = msg.sender;
         s_tokenCounter = 0;
-        s_goldImageURI = svgToImageURI(goldSvg);
-        s_silverImageURI = svgToImageURI(silverSvg);
     }
 
-    function mintNFT(uint256 inputNFT_num, string memory _nftName) public {
-        nftName = _nftName;
+    function batchMint(
+        uint256 inputNFT_num,
+        uint256 mint_quantity,
+        string memory _nftEmail
+    ) public {
+        nftEmail = _nftEmail;
+        NFT_num = inputNFT_num;
+        for (uint256 i = 0; i < mint_quantity; i++) {
+            s_tokenCounter = s_tokenCounter + 1;
+            _safeMint(msg.sender, s_tokenCounter);
+        }
+    }
+
+    function mintNFT(uint256 inputNFT_num, string memory _nftEmail) public {
+        nftEmail = _nftEmail;
         NFT_num = inputNFT_num;
         s_tokenCounter = s_tokenCounter + 1;
         _safeMint(msg.sender, s_tokenCounter);
@@ -46,9 +55,9 @@ contract PluggNFT is ERC721, Ownable {
     }
 
     function tokenURI(uint256) public view virtual override returns (string memory) {
-        string memory imageURI = s_goldImageURI;
+        string memory imageURI = gold_uri;
         if (NFT_num == 2) {
-            imageURI = s_silverImageURI;
+            imageURI = silver_uri;
         }
         return
             string(
@@ -58,22 +67,17 @@ contract PluggNFT is ERC721, Ownable {
                         bytes(
                             abi.encodePacked(
                                 '{"name":"',
-                                nftName,
-                                '", "description":"An NFT defines your Plugg Membership", ',
-                                '"attributes": [{"trait_type": "coolness", "value": 100}], "image":"ipfs://QmP8J68yMqhJahwKdHFRAyQQacriE5ykdnVbXKwRCeujiU",  "email":"a@b.com","organization":"Totality"}'
+                                name(),
+                                '","description":"NFT Defines your Plugg Membership","image":"',
+                                imageURI,
+                                '", "attributes":[{"trait_type":"Email","value": "',
+                                nftEmail,
+                                '"},{ "trait_type":"Chain","value":"Polygon"},{"trait_type":"NFT_Provider","value":"plugg.network"}]}'
                             )
                         )
                     )
                 )
             );
-    }
-
-    function getGoldNFT_SVG() public view returns (string memory) {
-        return s_goldImageURI;
-    }
-
-    function getSilverNFT_SVG() public view returns (string memory) {
-        return s_silverImageURI;
     }
 
     function getTokenCounter() public view returns (uint256) {

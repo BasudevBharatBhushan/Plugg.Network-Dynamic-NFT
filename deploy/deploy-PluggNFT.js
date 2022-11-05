@@ -7,15 +7,12 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     const { deploy, log } = deployments
     const { deployer } = await getNamedAccounts()
 
-    const goldNFT = fs.readFileSync("./img/happy.svg", { encoding: "utf8" })
-    const silverNFT = fs.readFileSync("./img/frown.svg", { encoding: "utf8" })
-
     log("--------------------------------------------------------------------")
 
-    arguments = [goldNFT, silverNFT]
+    arguments = []
     const PluggSvgNft = await deploy("PluggNFT", {
         from: deployer,
-        args: arguments,
+        args: [],
         log: true,
         waitConfirmations: network.config.blockConfirmations || 1,
     })

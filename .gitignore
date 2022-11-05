@@ -3,7 +3,6 @@
 .vscode
 
 # hardhat
-artifacts
 cache
 deployments
 node_modules
@@ -101,3 +100,5 @@ lint/tmp/
 gas-report.txt
 .issue.md
 typechain-types
+sample.json
+Metadata.txt
