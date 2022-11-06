@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { BigNumber } from "ethers"
 
-const BatchMint = ({ accounts, setAccounts, provider, contract, isConnected, signer }) => {
+const BatchMint = ({ web3Provider, contract }) => {
     const [NFTType, setNFTType] = useState(1)
     const [NFTString, setNFTString] = useState("")
     const [MintMessgae, setMintMessage] = useState("")
@@ -14,7 +14,6 @@ const BatchMint = ({ accounts, setAccounts, provider, contract, isConnected, sig
         console.log("Mint Function Triggered")
         if (window.ethereum) {
             //check if u r still connected to metamask
-            console.log(provider)
             try {
                 console.log("Minting......")
                 const response = await contract.batchMint(
@@ -54,7 +53,7 @@ const BatchMint = ({ accounts, setAccounts, provider, contract, isConnected, sig
     return (
         <div>
             <h1>BATCH MINTING</h1>
-            {isConnected && (
+            {web3Provider != null && (
                 <div>
                     <h3>Mint Your NFT</h3>
                     <button onClick={goldClick}>Gold</button>

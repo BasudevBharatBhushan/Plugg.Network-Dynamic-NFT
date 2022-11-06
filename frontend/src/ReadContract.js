@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const ReadContract = ({ accounts, setAccounts, provider, contract, isConnected }) => {
+const ReadContract = ({ provider, contract, web3Provider }) => {
     const [ContractOwner, SetContractOwner] = useState("")
     const [NFTOwner, setNFTOwner] = useState("")
     const [NFTNumber, SetNFTNumber] = useState()
@@ -45,7 +45,7 @@ const ReadContract = ({ accounts, setAccounts, provider, contract, isConnected }
     return (
         <div>
             <h1>Read Contract Function (Do not cost Gas)</h1>
-            {isConnected && (
+            {web3Provider != null && (
                 <div>
                     <form onSubmit={showNFTOwner}>
                         <input

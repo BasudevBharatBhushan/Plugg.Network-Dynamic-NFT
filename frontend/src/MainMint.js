@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { BigNumber } from "ethers"
 
-const MainMint = ({ accounts, setAccounts, provider, contract, isConnected, signer }) => {
+const MainMint = ({ web3Provider, contract }) => {
     const [NFTType, setNFTType] = useState(1)
     const [NFTString, setNFTString] = useState("")
     const [MintMessgae, setMintMessage] = useState("")
@@ -12,8 +12,6 @@ const MainMint = ({ accounts, setAccounts, provider, contract, isConnected, sign
         setNFTString("")
         console.log("Mint Function Triggered")
         if (window.ethereum) {
-            //check if u r still connected to metamask
-            console.log(provider)
             try {
                 console.log("Minting......")
                 const response = await contract.mintNFT(BigNumber.from(NFTType), MintEmail)
@@ -48,7 +46,7 @@ const MainMint = ({ accounts, setAccounts, provider, contract, isConnected, sign
     return (
         <div>
             <h1>Write Contract Functions (Cost Gas)</h1>
-            {isConnected && (
+            {web3Provider != null && (
                 <div>
                     <h3>Mint Your NFT</h3>
                     <button onClick={goldClick}>Gold</button>
