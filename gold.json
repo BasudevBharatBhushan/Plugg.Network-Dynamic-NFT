@@ -1,0 +1,19 @@
+{
+    "name": "Plugg Gold NFT",
+    "description": "NFT Defines your Plugg Membership",
+    "attributes": [
+        {
+            "trait_type": "Email",
+            "value": "bharatbhushan173@gmail.com"
+        },
+        {
+            "trait_type": "Chain",
+            "value": "Polygon"
+        },
+        {
+            "trait_type": "NFT_Provider",
+            "value": "plugg.network"
+        }
+    ],
+    "image": "ipfs://Qmc8EeCzJpUvpVCeeeqjiEFuXhjEion5dmN3QZUKmouyc4"
+}

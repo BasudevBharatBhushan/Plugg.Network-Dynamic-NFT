@@ -1,7 +1,16 @@
-.App {
+.mintButton {
+    display: inline-block;
+}
+
+.mint_message {
     text-align: center;
 }
 
-.mintButton {
-    display: inline-block;
+.logo {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.cards {
+    margin: 10px;
 }

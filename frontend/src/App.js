@@ -1,23 +1,35 @@
-import PluggNFT from "./artifacts/contracts/PluggNFT.sol/PluggNFT.json" //Import ABI Code to interact with smart contract
+import "./App.css"
+import { useState, useEffect } from "react"
 import { ethers } from "ethers"
-import { useState, useReducer } from "react"
 import ReadContract from "./ReadContract"
-import MainMint from "./MainMint"
-import BatchMint from "./BatchMint"
 import { Web3Auth } from "@web3auth/modal"
 
-// const PluggNFT_ContractAddress = "0xc44Bb7bBe6bb5dF98F20A9Fc66430FC3321a56bB"
-// const PluggNFT_ContractAddress = "0x3b9F4371d7EE65319aB044672a270901A390b8de"
-const PluggNFT_ContractAddress = "0x96FcAa4c8026C76C35f3c51fCed45E8d6069642E"
+import BatchMint from "./BatchMint"
+import SidebarComponent from "./components/sidebar"
+import "bootstrap/dist/css/bootstrap.min.css"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import ViewNFTs from "./page/ViewNFTs"
+import Home from "./page/Home"
 
-const providerOptions = {}
+import PluggNFT from "./artifacts/contracts/PluggNFT.sol/PluggNFT.json" //Import ABI Code to interact with smart contract
+
+// const PluggNFT_ContractAddress = "0x96FcAa4c8026C76C35f3c51fCed45E8d6069642E"
+// const PluggNFT_ContractAddress = "0x1D2bE354ADcf7e46417395A59Ef715b53D83CDaE"
+const PluggNFT_ContractAddress = "0x28c05eD93f56a0C97eC3cb348E9a19A1b87c4b72"
 
 function App() {
     const [ReadContracts, setReadContracts] = useState()
     const [WriteContracts, setWriteContracts] = useState()
 
+    const [Signer, setSigner] = useState("")
     const [web3Provider, setWeb3Provider] = useState(null)
     const [accounts, setAccounts] = useState(false)
+
+    const [isConnectWallet, setisConnectWallet] = useState(false)
+
+    // useEffect(() => {
+    //     connectWallet()
+    // }, [])
 
     async function connectWallet() {
         try {
@@ -48,6 +60,7 @@ function App() {
                 if (provider) {
                     setWeb3Provider(provider)
                     const signer = provider.getSigner()
+                    setSigner(signer)
                     const address = await signer.getAddress()
                     console.log(address)
                     const ReadContract = new ethers.Contract(
@@ -75,27 +88,36 @@ function App() {
         }
     }
 
+    const connectWeb3Wallet = async () => {
+        await connectWallet()
+        setisConnectWallet(true)
+    }
+
     return (
         <div className="App">
-            <h1>
-                <u>Frontend Structure to Interact with Smart Contract</u>
-            </h1>
-            <h4>Smart Contract address : {PluggNFT_ContractAddress}</h4>
+            <SidebarComponent
+                web3Provider={web3Provider}
+                connectWallet={connectWallet}
+                accounts={accounts}
+            />
 
-            <div>
-                {web3Provider == null ? (
-                    <button onClick={connectWallet}>Connect Wallet</button>
-                ) : (
-                    <div>
-                        <p>Connected</p>
-                        <button onClick={connectWallet}>Disconnect</button>
-                    </div>
-                )}
-            </div>
-
-            <ReadContract contract={ReadContracts} web3Provider={web3Provider} />
-            <MainMint web3Provider={web3Provider} contract={WriteContracts} />
-            <BatchMint web3Provider={web3Provider} contract={WriteContracts} />
+            <Router>
+                <Routes>
+                    <Route
+                        path="/link"
+                        element={
+                            <BatchMint
+                                WriteContracts={WriteContracts}
+                                ReadContracts={ReadContracts}
+                                Signer={Signer}
+                                connectWallet={connectWallet}
+                            />
+                        }
+                    />
+                    <Route path="/" element={<Home accounts={accounts} />} />
+                    <Route path="/viewnft" element={<ViewNFTs connectWallet={connectWallet} />} />
+                </Routes>
+            </Router>
         </div>
     )
 }

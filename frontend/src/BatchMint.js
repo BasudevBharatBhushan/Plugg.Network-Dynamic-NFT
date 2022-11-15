@@ -1,91 +1,237 @@
-import { useState } from "react"
-import { BigNumber } from "ethers"
+import "./App.css"
+import { useState, useEffect } from "react"
+import { ethers, BigNumber } from "ethers"
+import FloatingLabel from "react-bootstrap/FloatingLabel"
+import Form from "react-bootstrap/Form"
+import Button from "react-bootstrap/Button"
+import Col from "react-bootstrap/Col"
+import Row from "react-bootstrap/Row"
+import Container from "react-bootstrap/Container"
 
-const BatchMint = ({ web3Provider, contract }) => {
+const BatchMint = ({ WriteContracts, ReadContracts, Signer, connectWallet }) => {
+    useEffect(() => {
+        connectWallet()
+    }, [])
     const [NFTType, setNFTType] = useState(1)
     const [NFTString, setNFTString] = useState("")
-    const [MintMessgae, setMintMessage] = useState("")
+    const [MintMessage, setMintMessage] = useState("")
     const [MintQuantity, setMintQuantity] = useState(1)
-    const [MintEmail, SetMintEmail] = useState("hello@plugg.network")
+    const [MintEmails, SetMintEmails] = useState("")
+    const [MintAddresses, setMintAddress] = useState("")
 
-    async function handleMint() {
-        setMintMessage("")
+    const handleBatchMinting_MultipleAddress = async () => {
         setNFTString("")
-        console.log("Mint Function Triggered")
+
+        let Emailarray = MintEmails.split(";").map(function (item) {
+            return item.trim()
+        })
+        let Addressarray = MintAddresses.split(";").map(function (item) {
+            return item.trim()
+        })
+
+        console.log(
+            `is valid address ${ethers.utils.isAddress(Addressarray[1])}   ${Addressarray[1]}`
+        )
+
+        setMintMessage(`${Emailarray.length} NFTs minting in progress...(Please Wait)`)
         if (window.ethereum) {
-            //check if u r still connected to metamask
             try {
-                console.log("Minting......")
-                const response = await contract.batchMint(
-                    BigNumber.from(NFTType),
-                    BigNumber.from(MintQuantity),
-                    MintEmail
+                const HandleBatchMinting_MultipleAddress = await WriteContracts.BatchMint_MultiAdd(
+                    Addressarray,
+                    Emailarray,
+                    BigNumber.from(NFTType)
                 )
-                await response.wait(1)
-                console.log(response)
-                setMintMessage(`${MintQuantity} NFT has been successfully Minted`)
-                setMintQuantity(0)
-            } catch (err) {
-                setMintMessage("Minting Failed")
-                console.log("ERROR:", err)
+                await HandleBatchMinting_MultipleAddress.wait(1)
+
+                setMintMessage(
+                    `${Emailarray.length} NFTs has been successfully minted at Txn hash ${HandleBatchMinting_MultipleAddress.hash}`
+                )
+            } catch (error) {
+                setMintMessage(`Minting Failed`)
+                console.log(error)
+            }
+        }
+    }
+
+    const handleBatchMinting_SingleAddress = async () => {
+        setNFTString("")
+
+        let Emailarray = MintEmails.split(";").map(function (item) {
+            return item.trim()
+        })
+
+        setMintMessage(`${Emailarray.length} NFTs minting in progress...(Please Wait)`)
+        if (window.ethereum) {
+            try {
+                const HandleBatchMinting_SingleAddress = await WriteContracts.BatchMint_SingleAdd(
+                    Signer.getAddress(),
+                    Emailarray,
+                    BigNumber.from(NFTType)
+                )
+                await HandleBatchMinting_SingleAddress.wait(1)
+
+                setMintMessage(
+                    `${Emailarray.length} NFTs has been successfully minted at Txn hash ${HandleBatchMinting_SingleAddress.hash}`
+                )
+            } catch (error) {
+                setMintMessage(`Minting Failed`)
+                console.log(error)
             }
         }
     }
 
     const goldClick = () => {
+        setMintMessage("")
         setNFTString("You have choosen to Mint Gold NFT")
         setNFTType(1)
     }
 
     const silverClick = () => {
+        setMintMessage("")
+
         setNFTString("You have choosen to Mint Silver NFT")
         setNFTType(2)
     }
 
-    const func1 = async () => {
-        let signerAddress = await contract.signer.getAddress()
-        window.location.href = "https://testnets.opensea.io/" + signerAddress
-    }
-    const func2 = async () => {
-        window.location.href = "https://testnets.opensea.io/collection/plugg-network-v2"
-    }
+    // const func1 = async () => {
+    //     let signerAddress = await WriteContracts.signer.getAddress()
+    //     window.location.href = "https://testnets.opensea.io/" + Signer.getAddress()
+    // }
+    // const func2 = async () => {
+    //     window.location.href = "https://testnets.opensea.io/collection/plugg-network-nqpirezyzx"
+    // }
 
     return (
         <div>
-            <h1>BATCH MINTING</h1>
-            {web3Provider != null && (
-                <div>
-                    <h3>Mint Your NFT</h3>
-                    <button onClick={goldClick}>Gold</button>
-                    <button onClick={silverClick}>Silver</button>
-                    <input
-                        onChange={(e) => {
-                            setMintQuantity(e.target.value)
-                        }}
-                        type="number"
-                        placeholder="Enter no. of NFT you want to mint"
-                    />
-                    <input
-                        onChange={(e) => {
-                            SetMintEmail(e.target.value)
-                        }}
-                        placeholder="Please Enter your Email"
-                    />
-                    {NFTString}
-                    <div>
-                        <button className="mintButton" onClick={handleMint}>
-                            MINT
-                        </button>
-                        {MintMessgae}
+            <Container style={{ marginTop: "40px" }}>
+                <Row>
+                    <Col>
                         <div>
-                            <a onClick={func1}>View your NFTs</a>
+                            <h3>Mint NFTs to Multiple Addresses</h3>
+                            <Row>
+                                <Col xs={7}>
+                                    <FloatingLabel
+                                        controlID="floatingInput"
+                                        label="Recipients Addresses"
+                                        className="mb-3"
+                                    >
+                                        <Form.Control
+                                            as="textarea"
+                                            placeholder="Enter Addresses"
+                                            onChange={(e) => {
+                                                setMintAddress(e.target.value)
+                                            }}
+                                        />
+                                    </FloatingLabel>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={7}>
+                                    <FloatingLabel
+                                        controlID="floatingInput"
+                                        label="Email addresses"
+                                        className="mb-3"
+                                    >
+                                        <Form.Control
+                                            type="email"
+                                            as="textarea"
+                                            placeholder="Enter email"
+                                            onChange={(e) => {
+                                                SetMintEmails(e.target.value)
+                                            }}
+                                        />
+                                    </FloatingLabel>
+                                </Col>
+                            </Row>
+
+                            <div>
+                                <Form.Group as={Row} className="mb-3">
+                                    <Col sm={10}>
+                                        <Form.Check
+                                            type="radio"
+                                            label="Plugg Gold NFT"
+                                            name="formHorizontalRadios"
+                                            id="formHorizontalRadios1"
+                                            onClick={goldClick}
+                                        />
+                                        <Form.Check
+                                            type="radio"
+                                            label="Plugg Silver NFT"
+                                            name="formHorizontalRadios"
+                                            id="formHorizontalRadios2"
+                                            onClick={silverClick}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </div>
+                            <Button onClick={handleBatchMinting_MultipleAddress} variant="dark">
+                                Mint
+                            </Button>
                         </div>
+                    </Col>
+                    <Col>
                         <div>
-                            <a onClick={func2}>View all PluggNFTs</a>
+                            <h3>Mint NFTs to Single Address</h3>
+                            <Row>
+                                <Col xs={7}>
+                                    <FloatingLabel
+                                        controlID="floatingInput"
+                                        label="Email addresses"
+                                        className="mb-3"
+                                    >
+                                        <Form.Control
+                                            as="textarea"
+                                            type="email"
+                                            placeholder="Enter email"
+                                            onChange={(e) => {
+                                                SetMintEmails(e.target.value)
+                                            }}
+                                        />
+                                    </FloatingLabel>
+                                </Col>
+                            </Row>
+
+                            <div>
+                                <Form.Group as={Row} className="mb-3">
+                                    <Col sm={10}>
+                                        <Form.Check
+                                            type="radio"
+                                            label="Plugg Gold NFT"
+                                            name="formHorizontalRadios"
+                                            id="formHorizontalRadios1"
+                                            onClick={goldClick}
+                                        />
+                                        <Form.Check
+                                            type="radio"
+                                            label="Plugg Silver NFT"
+                                            name="formHorizontalRadios"
+                                            id="formHorizontalRadios2"
+                                            onClick={silverClick}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </div>
+                            <Button onClick={handleBatchMinting_SingleAddress} variant="dark">
+                                Mint
+                            </Button>
                         </div>
-                    </div>
-                </div>
-            )}
+                    </Col>
+                </Row>
+            </Container>
+
+            <h3 style={{ color: "blue" }} className="mint_message">
+                {NFTString}
+            </h3>
+            <h3 style={{ color: "red" }} className="mint_message">
+                {MintMessage}
+            </h3>
+
+            {/* <div>
+                <a onClick={func1}>View your NFTs</a>
+            </div>
+            <div>
+                <a onClick={func2}>View all PluggNFTs</a>
+            </div> */}
         </div>
     )
 }
