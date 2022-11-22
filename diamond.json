@@ -1,0 +1,19 @@
+{
+    "name": "Cold Diamond NFT",
+    "description": "Plugg Airdrop NFT",
+    "attributes": [
+        {
+            "trait_type": "Email",
+            "value": "hello@plugg.network"
+        },
+        {
+            "trait_type": "Chain",
+            "value": "Polygon"
+        },
+        {
+            "trait_type": "NFT_Provider",
+            "value": "plugg.network"
+        }
+    ],
+    "image": "ipfs://QmQCEJMNhh815bTnEx3dARUSBw45ffrR3MkghygtbjEQQq"
+}

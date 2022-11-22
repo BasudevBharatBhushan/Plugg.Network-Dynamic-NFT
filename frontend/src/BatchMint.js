@@ -107,7 +107,14 @@ const BatchMint = ({ WriteContracts, ReadContracts, Signer, connectWallet }) => 
                 <Row>
                     <Col>
                         <div>
-                            <h3>Mint NFTs to Multiple Addresses</h3>
+                            <h3
+                                style={{
+                                    fontFamily: "'Noto Sans', sans-serif",
+                                    marginBottom: "20px",
+                                }}
+                            >
+                                Batch Minting
+                            </h3>
                             <Row>
                                 <Col xs={7}>
                                     <FloatingLabel
@@ -171,7 +178,14 @@ const BatchMint = ({ WriteContracts, ReadContracts, Signer, connectWallet }) => 
                     </Col>
                     <Col>
                         <div>
-                            <h3>Mint NFTs to Single Address</h3>
+                            <h3
+                                style={{
+                                    fontFamily: "'Noto Sans', sans-serif",
+                                    marginBottom: "20px",
+                                }}
+                            >
+                                Mono Minting
+                            </h3>
                             <Row>
                                 <Col xs={7}>
                                     <FloatingLabel

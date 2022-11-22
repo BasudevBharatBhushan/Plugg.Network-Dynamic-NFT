@@ -9,7 +9,7 @@ const SidebarComponent = ({ web3Provider, connectWallet, accounts }) => {
     return (
         <Navbar bg="light" expand="lg">
             <Container>
-                <Navbar.Brand href="/">Plugg.Network</Navbar.Brand>
+                <Navbar.Brand href="/">Lo! Food</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">

@@ -6,6 +6,7 @@ import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import Goldimg from "../img/Gold.png"
 import Silverimg from "../img/Silver.png"
+import Diamond from "../img/diamond.gif"
 
 const Moralis = require("moralis").default
 const { EvmChain } = require("@moralisweb3/evm-utils")
@@ -82,26 +83,36 @@ function ViewNFTs({ connectWallet }) {
                 <Row>
                     <Col className="cards" style={{ marginLeft: "110px" }}>
                         <NFTCard
-                            title={"Plugg Silver NFT"}
+                            title={"COLD DIAMOND NFT"}
                             description={"ERC-721 | Polygon Chain"}
-                            imageURI={Silverimg}
-                            email={"plugg@network.com"}
+                            imageURI={Diamond}
+                            email={"dev.bharat173@gmail.com"}
+                            HotelDesc={"Free 1 Night Stay at ITC"}
+                            DiscountDesc={"50% OFF on your all orders"}
+                            CouponCode={"50"}
                         />
                     </Col>
                     <Col className="cards">
                         <NFTCard
-                            title={"Plugg Gold NFT"}
+                            title={"LO Gold NFT"}
                             description={"ERC-721 | Polygon Chain"}
-                            email={"raghu@plugg.co"}
+                            email={"raghu@plugg.network"}
                             imageURI={Goldimg}
+                            HotelDesc={"Ticket to Sunburn"}
+                            DiscountDesc={"30% OFF on your all orders"}
+                            CouponCode={"30"}
                         />
                     </Col>
+
                     <Col className="cards">
                         <NFTCard
-                            title={"Plugg Silver NFT"}
+                            title={"LO Silver NFT"}
                             description={"ERC-721 | Polygon Chain"}
                             email={"avisek@lofood.co"}
                             imageURI={Silverimg}
+                            HotelDesc={"Free Movie Tickets #"}
+                            DiscountDesc={"10% OFF on your all orders"}
+                            CouponCode={"10"}
                         />
                     </Col>
                 </Row>
