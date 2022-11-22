@@ -18,3 +18,8 @@ https://user-images.githubusercontent.com/64151314/200114530-acbd598b-05ee-443c-
 https://user-images.githubusercontent.com/64151314/199705967-13983cc8-60c6-4331-a2a0-322bc86a39ce.mp4
 
 
+# Web3.auth Integration
+
+
+https://user-images.githubusercontent.com/64151314/200202155-d13382cb-10f6-48bf-9170-7d64c40b5037.mp4
+
